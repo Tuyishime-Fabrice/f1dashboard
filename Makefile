@@ -1,10 +1,10 @@
 .PHONY: setup data test dev api web build serve images
 
 setup:            ## install backend + frontend dependencies
-	pip install -r backend/requirements.txt
+	pip install -r backend/requirements-dev.txt
 	cd frontend && npm install
 
-data:             ## build data/f1.duckdb from data/raw (runs validation checks)
+data:             ## build backend/data/f1.duckdb from backend/data/raw (runs validation checks)
 	cd backend && python -m app.etl.build
 
 test:             ## backend regression tests

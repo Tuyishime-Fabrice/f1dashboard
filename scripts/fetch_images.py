@@ -40,7 +40,7 @@ import duckdb
 import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "raw"
+RAW = ROOT / "backend" / "data" / "raw"
 OUT = ROOT / "frontend" / "public" / "images"
 CREDITS = OUT / "credits.json"
 
@@ -57,6 +57,7 @@ DELAY = 3.0  # seconds between API calls (Wikimedia rate limits unauthenticated 
 # Wikimedia serves a fixed set of standard thumbnail widths.
 WIDTH = {"drivers": 500, "constructors": 960, "circuits": 960, "hero": 1920}
 FREE_LICENSE = re.compile(r"^(cc0|cc[- ]by(-sa)?([- ]\d(\.\d)?)?|public domain|pd\b|pd-|no restrictions)", re.I)
+OWNER_METHOD = "supplied-by-owner"
 PORTRAIT_HINT = re.compile(r"(portrait|headshot|\(cropped\)|_cropped|press_conference|interview)", re.I)
 SKIP_FILE = re.compile(
     r"(flag|logo_of|icon|symbol|helmet|signature|coat_of_arms|map_of|location|locator|commons-logo|wiki|"
@@ -282,9 +283,10 @@ def credit_record(entry: dict, local: str, method: str, article: str | None) -> 
 
 
 def name_match(file: str, entity: dict, kind: str) -> bool:
-    f = ascii_fold(file)
+    f = ascii_fold(file).replace("_", " ")
     if kind == "drivers":
-        return ascii_fold(entity["surname"]) in f
+        # Full "forename surname" phrase: a surname alone matched e.g. "J. Hamilton Lewis".
+        return ascii_fold(entity["name"]) in f
     if kind == "circuits":
         words = [w for w in re.findall(r"[a-z]{4,}", ascii_fold(entity["name"]))
                  if w not in ("circuit", "international", "autodromo", "grand", "prix", "street", "park", "racing")]
@@ -295,7 +297,9 @@ def name_match(file: str, entity: dict, kind: str) -> bool:
 # --------------------------------------------------------------------------- main
 def collect(client: Client, kind: str, entities: list[dict], credits: dict, force: bool, dry: bool) -> None:
     store = credits.setdefault(kind, {})
-    todo = [e for e in entities if force or e["ref"] not in store]
+    # Images supplied by the project owner are never replaced, even with --force.
+    todo = [e for e in entities
+            if e["ref"] not in store or (force and store[e["ref"]].get("method") != OWNER_METHOD)]
     print(f"\n[{kind}] {len(todo)} to process ({len(entities) - len(todo)} already credited)")
     for e in todo:
         e["article"] = title_from_url(e.get("url"))
@@ -391,8 +395,9 @@ def save(credits: dict) -> None:
     credits["_meta"] = {
         "generated": date.today().isoformat(),
         "source": "Wikimedia Commons (via the MediaWiki API)",
-        "policy": "Only files hosted on Commons with CC0, public-domain, CC BY or CC BY-SA licences are used. "
-                  "Thumbnails are unmodified apart from resizing by Wikimedia's thumbnailer.",
+        "policy": "Collected images are files hosted on Commons with CC0, public-domain, CC BY or CC BY-SA "
+                  "licences, unmodified apart from resizing by Wikimedia's thumbnailer. Images marked "
+                  "'Supplied by the project owner' were added manually; their licence is not recorded here.",
     }
     CREDITS.write_text(json.dumps(credits, indent=2, ensure_ascii=False, sort_keys=True), encoding="utf-8")
 

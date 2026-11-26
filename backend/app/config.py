@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-RAW_DIR = Path(os.environ.get("PITWALL_RAW_DIR", ROOT_DIR / "data" / "raw"))
-DB_PATH = Path(os.environ.get("PITWALL_DB_PATH", ROOT_DIR / "data" / "f1.duckdb"))
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = BACKEND_DIR.parent
+# The dataset lives inside the backend so the backend deploys as a self-contained
+# service (on Vercel, only files under the service root are bundled).
+RAW_DIR = Path(os.environ.get("PITWALL_RAW_DIR", BACKEND_DIR / "data" / "raw"))
+DB_PATH = Path(os.environ.get("PITWALL_DB_PATH", BACKEND_DIR / "data" / "f1.duckdb"))
+# Used when DB_PATH is missing and its directory is read-only (serverless runtimes,
+# where only the temp directory is writable).
+FALLBACK_DB_PATH = Path(tempfile.gettempdir()) / "pitwall" / "f1.duckdb"
 FRONTEND_DIST = ROOT_DIR / "frontend" / "dist"
 
 # Pit-lane durations outside this window are excluded from duration statistics.

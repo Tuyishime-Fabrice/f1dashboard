@@ -3,29 +3,38 @@ import { useState } from "react";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { teamColor } from "@/lib/colors";
-import { useImage, type ImageCredit, type ImageKind } from "@/lib/images";
+import { isOwnerSupplied, sourceLabel, useImage, type ImageCredit, type ImageKind } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 /** Attribution chip shown on every sourced image. */
 export function CreditBadge({ credit, className }: { credit: ImageCredit; className?: string }) {
+  const owner = isOwnerSupplied(credit);
+  const cls = cn("absolute right-1 bottom-1 flex size-4 items-center justify-center rounded-full bg-black/45 text-white/90 hover:bg-black/70", className);
+  const label = owner ? `Image credit: ${sourceLabel(credit)}` : `Image credit: ${credit.author}, ${credit.license}`;
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <a
-          href={credit.source_url}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Image credit: ${credit.author}, ${credit.license}`}
-          className={cn("absolute right-1 bottom-1 flex size-4 items-center justify-center rounded-full bg-black/45 text-white/90 hover:bg-black/70", className)}
-        >
-          <Info className="size-2.5" />
-        </a>
+        {credit.source_url ? (
+          <a href={credit.source_url} target="_blank" rel="noreferrer" aria-label={label} className={cls}>
+            <Info className="size-2.5" />
+          </a>
+        ) : (
+          <span tabIndex={0} role="img" aria-label={label} className={cls}>
+            <Info className="size-2.5" />
+          </span>
+        )}
       </TooltipTrigger>
       <TooltipContent side="top">
-        <div className="font-medium">{credit.author}</div>
-        <div className="text-white/70">
-          {credit.license} · Wikimedia Commons
-        </div>
+        {owner ? (
+          <div className="font-medium">{sourceLabel(credit)}</div>
+        ) : (
+          <>
+            <div className="font-medium">{credit.author}</div>
+            <div className="text-white/70">
+              {credit.license} · {sourceLabel(credit)}
+            </div>
+          </>
+        )}
       </TooltipContent>
     </Tooltip>
   );

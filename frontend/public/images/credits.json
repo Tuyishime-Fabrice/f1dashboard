@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated": "2026-11-26",
-    "policy": "Only files hosted on Commons with CC0, public-domain, CC BY or CC BY-SA licences are used. Thumbnails are unmodified apart from resizing by Wikimedia's thumbnailer.",
+    "policy": "Collected images are files hosted on Commons with CC0, public-domain, CC BY or CC BY-SA licences, unmodified apart from resizing by Wikimedia's thumbnailer. Images marked 'Supplied by the project owner' were added manually; their licence is not recorded here.",
     "source": "Wikimedia Commons (via the MediaWiki API)"
   },
   "circuits": {
@@ -286,6 +286,20 @@
       "source_url": "https://commons.wikimedia.org/wiki/File:DAmbrosioBerlin_(cropped).jpg",
       "title": "File:DAmbrosioBerlin (cropped).jpg",
       "wikipedia_article": "Jérôme d'Ambrosio"
+    },
+    "antonelli": {
+      "attribution_required": false,
+      "author": "Not recorded",
+      "credit": null,
+      "file": "/images/drivers/antonelli.jpg",
+      "image_url": null,
+      "license": "Not recorded",
+      "license_url": null,
+      "method": "supplied-by-owner",
+      "retrieved": "2026-11-26",
+      "source_url": null,
+      "title": "Supplied image (Mercedes race suit)",
+      "wikipedia_article": "Andrea Kimi Antonelli"
     },
     "arnoux": {
       "attribution_required": true,
@@ -653,16 +667,16 @@
     },
     "hamilton": {
       "attribution_required": false,
-      "author": "State of Illinois",
-      "credit": "https://www.idaillinois.org/digital/collection/bb/id/18240/rec/39",
-      "file": "/images/drivers/hamilton.png",
-      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/J._Hamilton_Lewis_%28Illinois_Blue_Book_Portrait_1931-1932%29.png/500px-J._Hamilton_Lewis_%28Illinois_Blue_Book_Portrait_1931-1932%29.png",
-      "license": "Public domain",
+      "author": "Not recorded",
+      "credit": null,
+      "file": "/images/drivers/hamilton.jpg",
+      "image_url": null,
+      "license": "Not recorded",
       "license_url": null,
-      "method": "commons-search",
+      "method": "supplied-by-owner",
       "retrieved": "2026-11-26",
-      "source_url": "https://commons.wikimedia.org/wiki/File:J._Hamilton_Lewis_(Illinois_Blue_Book_Portrait_1931-1932).png",
-      "title": "File:J. Hamilton Lewis (Illinois Blue Book Portrait 1931-1932).png",
+      "source_url": null,
+      "title": "Supplied image (Ferrari race suit)",
       "wikipedia_article": "Lewis Hamilton"
     },
     "haryanto": {
@@ -1071,6 +1085,20 @@
       "title": "File:Felipe Massa.jpg",
       "wikipedia_article": "Felipe Massa"
     },
+    "max_verstappen": {
+      "attribution_required": false,
+      "author": "Not recorded",
+      "credit": null,
+      "file": "/images/drivers/max_verstappen.jpg",
+      "image_url": null,
+      "license": "Not recorded",
+      "license_url": null,
+      "method": "supplied-by-owner",
+      "retrieved": "2026-11-26",
+      "source_url": null,
+      "title": "2026redbullracingmaxver01right.avif",
+      "wikipedia_article": "Max Verstappen"
+    },
     "mazepin": {
       "attribution_required": true,
       "author": "Somanyhorsesru журнал",
@@ -1168,6 +1196,20 @@
       "source_url": "https://commons.wikimedia.org/wiki/File:Piloto_Felipe_Nasr_fala_%C3%A0_imprensa_ap%C3%B3s_encontro_com_Temer_(28412246304)_(cropped).jpg",
       "title": "File:Piloto Felipe Nasr fala à imprensa após encontro com Temer (28412246304) (cropped).jpg",
       "wikipedia_article": "Felipe Nasr"
+    },
+    "norris": {
+      "attribution_required": false,
+      "author": "Not recorded",
+      "credit": null,
+      "file": "/images/drivers/norris.jpg",
+      "image_url": null,
+      "license": "Not recorded",
+      "license_url": null,
+      "method": "supplied-by-owner",
+      "retrieved": "2026-11-26",
+      "source_url": null,
+      "title": "2026mclarenlannor01right.avif",
+      "wikipedia_article": "Lando Norris"
     },
     "ocon": {
       "attribution_required": false,

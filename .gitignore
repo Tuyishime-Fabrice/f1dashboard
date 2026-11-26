@@ -5,9 +5,12 @@ __pycache__/
 .venv/
 venv/
 
-# Generated database (rebuilt from data/raw by `make data`)
-data/*.duckdb
-data/*.duckdb.wal
+# Generated database (rebuilt from backend/data/raw by `make data`)
+backend/data/*.duckdb
+backend/data/*.duckdb.wal
+
+# Vercel
+.vercel/
 
 # Node / build
 frontend/node_modules/

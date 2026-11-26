@@ -7,7 +7,7 @@ Production:   build the frontend (``npm run build``) and the same app also serve
 
 from __future__ import annotations
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
@@ -45,6 +45,8 @@ if FRONTEND_DIST.exists():
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
+        if path == "api" or path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not Found")
         target = FRONTEND_DIST / path
         if path and target.is_file() and FRONTEND_DIST in target.resolve().parents:
             return FileResponse(target)

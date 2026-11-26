@@ -7,7 +7,7 @@ import { Segmented } from "@/components/common/Segmented";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useApi, type Row } from "@/lib/api";
 import { fmt } from "@/lib/format";
-import { useCredits, type ImageCredit } from "@/lib/images";
+import { isOwnerSupplied, useCredits, type ImageCredit } from "@/lib/images";
 
 const DATASET_LABEL: Record<string, string> = {
   results: "Race results",
@@ -156,9 +156,13 @@ export default function About() {
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    <a href={c.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-                      Commons <ExternalLink className="size-3" />
-                    </a>
+                    {c.source_url ? (
+                      <a href={c.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+                        Commons <ExternalLink className="size-3" />
+                      </a>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">{isOwnerSupplied(c) ? "Supplied by owner" : "—"}</span>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

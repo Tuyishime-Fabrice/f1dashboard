@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 export interface ImageCredit {
   file: string;
   title: string;
-  source_url: string;
-  image_url: string;
+  source_url: string | null;
+  image_url: string | null;
   author: string;
   credit: string | null;
   license: string;
@@ -24,6 +24,10 @@ export interface CreditsFile {
   hero?: Record<string, ImageCredit>;
   _meta?: { generated: string; source: string; policy: string };
 }
+
+/** Where an image came from, for credit labels. */
+export const isOwnerSupplied = (c: ImageCredit) => c.method === "supplied-by-owner";
+export const sourceLabel = (c: ImageCredit) => (isOwnerSupplied(c) ? "Supplied by the project owner" : "Wikimedia Commons");
 
 /** Image credits written by scripts/fetch_images.py (empty when not yet run). */
 export function useCredits() {
