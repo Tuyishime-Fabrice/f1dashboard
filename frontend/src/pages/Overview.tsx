@@ -146,9 +146,9 @@ export default function Overview() {
           description="Cumulative points after each round"
           loading={cprog.isLoading}
           empty={cprog.data && cprog.data.series.length === 0 ? "The constructors' championship was first held in 1958." : false}
-          height={300}
+          height={380}
         >
-          {cprogOpt && <EChart option={cprogOpt} height={300} ariaLabel="Constructor points progression" />}
+          {cprogOpt && <EChart option={cprogOpt} height={380} ariaLabel="Constructor points progression" />}
         </Panel>
 
         <Panel className="xl:col-span-6" title="Top drivers" description="Ranked by championship position" loading={top.isLoading} contentClassName="px-0 pb-1" height={300}>
