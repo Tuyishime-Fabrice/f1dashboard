@@ -41,10 +41,12 @@ interface PortraitProps {
   rounded?: "full" | "md";
   showCredit?: boolean;
   objectPosition?: string;
+  /** "contain" for diagrams such as circuit maps (no cropping). */
+  fit?: "cover" | "contain";
 }
 
 /** Licensed image with a clean monogram fallback (never an unrelated photo). */
-export function Portrait({ kind, refKey, alt, fallback, teamRef, className, rounded = "md", showCredit = true, objectPosition = "50% 22%" }: PortraitProps) {
+export function Portrait({ kind, refKey, alt, fallback, teamRef, className, rounded = "md", showCredit = true, objectPosition = "50% 22%", fit = "cover" }: PortraitProps) {
   const credit = useImage(kind, refKey);
   const [failed, setFailed] = useState(false);
   const color = teamColor(teamRef ?? null);
@@ -61,8 +63,8 @@ export function Portrait({ kind, refKey, alt, fallback, teamRef, className, roun
     );
   }
   return (
-    <div className={cn("relative shrink-0 overflow-hidden bg-[#eef0f2]", radius, className)}>
-      <img src={credit.file} alt={alt} loading="lazy" onError={() => setFailed(true)} className="size-full object-cover" style={{ objectPosition }} />
+    <div className={cn("relative shrink-0 overflow-hidden", fit === "contain" ? "bg-white p-3" : "bg-[#eef0f2]", radius, className)}>
+      <img src={credit.file} alt={alt} loading="lazy" onError={() => setFailed(true)} className={cn("size-full", fit === "contain" ? "object-contain" : "object-cover")} style={{ objectPosition: fit === "contain" ? "50% 50%" : objectPosition }} />
       {showCredit && rounded !== "full" && <CreditBadge credit={credit} />}
     </div>
   );

@@ -43,7 +43,7 @@ const TEAM: Record<string, string> = {
   prost: "#1F3B8A",
   bar: "#B8B8B8",
   vanwall: "#00563F",
-  maserati: "#B22222",
+  maserati: "#7A3B69",
   cooper: "#1F4E79",
   brm: "#2E7D32",
   matra: "#2C6DB5",

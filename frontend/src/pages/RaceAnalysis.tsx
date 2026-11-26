@@ -159,7 +159,7 @@ export default function RaceAnalysis() {
       {/* Race header */}
       <Card className="overflow-hidden">
         <div className="flex flex-col md:flex-row">
-          <Portrait kind="circuits" refKey={d?.race.circuit_ref} alt={d?.race.circuit_name ?? ""} fallback={d ? d.race.country.slice(0, 3).toUpperCase() : ""} className="h-44 w-full rounded-none text-2xl md:h-auto md:w-[260px]" objectPosition="50% 50%" />
+          <Portrait kind="circuits" refKey={d?.race.circuit_ref} alt={d?.race.circuit_name ?? ""} fallback={d ? d.race.country.slice(0, 3).toUpperCase() : ""} className="h-48 w-full rounded-none border-b border-border text-2xl md:h-auto md:min-h-[180px] md:w-[260px] md:border-r md:border-b-0" fit="contain" />
           <div className="flex-1 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>

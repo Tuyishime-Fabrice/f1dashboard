@@ -94,7 +94,7 @@ export default function Overview() {
           description={`Cumulative championship points after each round · top ${prog.data?.series.length ?? 8} drivers`}
           loading={prog.isLoading}
           height={330}
-          footnote="Points include sprint races. Dashed lines mark a team's second driver."
+          footnote={`${season >= 2021 ? "Points include sprint races. " : season < 1991 ? "Points are counted championship points (dropped results excluded). " : ""}Dashed lines mark a team's second driver.`}
         >
           {progOpt && <EChart option={progOpt} height={330} ariaLabel="Cumulative points by round for the leading drivers" />}
         </Panel>
@@ -102,7 +102,7 @@ export default function Overview() {
         <Card className="flex flex-col overflow-hidden xl:col-span-4">
           <div className="flex items-start justify-between px-4 pt-3.5">
             <div>
-              <div className="label-caps">Championship {leaderWord}</div>
+              <div className="label-caps">{inProgress ? "Championship leader" : "World champion"}</div>
               <div className="mt-1 font-display text-[26px] leading-tight font-semibold">{lead?.driver_name ?? "—"}</div>
               {lead && <TeamLabel name={lead.constructor_name} teamRef={lead.constructor_ref} className="text-[13px] text-muted-foreground" />}
             </div>
@@ -124,7 +124,7 @@ export default function Overview() {
               <Stat label="Poles" value={leadStats?.poles ?? "—"} />
               <Stat label="Avg finish" value={fmt.num(leadStats?.avg_finish)} />
               <Stat label="DNFs" value={leadStats?.dnfs ?? "—"} />
-              <Stat label="Fastest laps" value={leadStats?.fastest_laps ?? "—"} />
+              <Stat label="Fastest laps" value={season < 2004 ? "n/a" : (leadStats?.fastest_laps ?? "—")} hint="Fastest-lap data from 2004" />
               <Stat label="Avg grid" value={fmt.num(leadStats?.avg_grid)} />
             </div>
           </div>
