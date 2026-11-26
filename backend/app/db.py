@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import threading
+from pathlib import Path
 from typing import Any, Iterable, Mapping, Union
 
 import duckdb
 import pandas as pd
 
-from app.config import DB_PATH
+from app.config import DB_PATH, FALLBACK_DB_PATH
 
 _lock = threading.Lock()
 _con: duckdb.DuckDBPyConnection | None = None
@@ -25,16 +26,30 @@ def _p(params: Params):
 
 
 
+def _resolve_db() -> Path:
+    """Path of a ready database, building one from the raw CSVs if none exists.
+
+    Deployments normally build the database ahead of time (``python -m app.etl.build``).
+    If that file is missing, build it in place, or in the temp directory when the
+    application directory is read-only.
+    """
+    for path in (DB_PATH, FALLBACK_DB_PATH):
+        if path.exists():
+            return path
+    from app.etl.build import build
+
+    try:
+        return build(DB_PATH, verbose=False)
+    except (OSError, duckdb.IOException):
+        return build(FALLBACK_DB_PATH, verbose=False)
+
+
 def get_connection() -> duckdb.DuckDBPyConnection:
     """Return a shared read-only connection, building the database on first use."""
     global _con
     with _lock:
         if _con is None:
-            if not DB_PATH.exists():
-                from app.etl.build import build
-
-                build(verbose=False)
-            _con = duckdb.connect(str(DB_PATH), read_only=True)
+            _con = duckdb.connect(str(_resolve_db()), read_only=True)
         return _con
 
 

@@ -40,7 +40,7 @@ import duckdb
 import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "raw"
+RAW = ROOT / "backend" / "data" / "raw"
 OUT = ROOT / "frontend" / "public" / "images"
 CREDITS = OUT / "credits.json"
 

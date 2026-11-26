@@ -8,12 +8,29 @@ An analytics dashboard for the Formula 1 World Championship, 1950 to the 2026 Az
 
 ```bash
 make setup      # pip + npm install
-make data       # build data/f1.duckdb from data/raw (≈3 s, runs validation checks)
+make data       # build backend/data/f1.duckdb from backend/data/raw (≈3 s, runs validation checks)
 make dev        # API on :8000 + web on :5173  →  open http://localhost:5173
 ```
 
 Single-process production mode: `make serve` builds the frontend and FastAPI serves both API and UI on `:8000`.
 Tests: `make test` (regression tests against published F1 records).
+
+## Deploying to Vercel
+
+`vercel.json` deploys the repository as one Vercel project with two [services](https://vercel.com/docs/services):
+
+| Service | Root | Public path | Notes |
+|---|---|---|---|
+| `frontend` | `frontend/` | `/*` | Vite static build. Extension-less paths fall back to `index.html` so client-side routes (`/drivers`, `/races`, ...) load directly. |
+| `backend` | `backend/` | `/api/*` | FastAPI (`app.main:app`). Receives the full `/api/...` path. The build step runs `python -m app.etl.build`, which builds and validates the DuckDB database from `backend/data/raw` and ships it with the function. |
+
+The browser calls the API with same-origin relative URLs (`/api/...`), so no service calls another server-side and no service bindings are needed. If the prebuilt database is missing at runtime, the backend rebuilds it in the temp directory (about 2 s on a cold start). The backend directory itself is read-only on Vercel.
+
+Run both services locally behind the same routing:
+
+```bash
+vercel dev --local
+```
 
 ## Pages
 
@@ -33,7 +50,8 @@ The season selector is global and stored in the URL along with each page's filte
 ## Project layout
 
 ```
-data/raw/                  17 CSVs + original docs (source of truth)
+vercel.json                Vercel services: frontend (/*) + backend (/api/*)
+backend/data/raw/          17 CSVs + original docs (source of truth)
 backend/app/
   etl/build.py             CSV → DuckDB: typed, cleaned, derived flags, season tables
   etl/validate.py          FK / uniqueness / consistency checks (build fails on errors)
@@ -80,4 +98,4 @@ PITWALL_WIKIMEDIA_CONTACT="you@example.com" python scripts/fetch_images.py
 
 The script resumes where it stopped (`--force` re-fetches), and it stops cleanly, keeping its progress, if Wikimedia keeps refusing requests.
 
-Dataset licence: CC0 (see `data/raw/README.md`). Image licences: see `credits.json`.
+Dataset licence: CC0 (see `backend/data/raw/README.md`). Image licences: see `credits.json`.
