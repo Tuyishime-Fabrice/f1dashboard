@@ -98,4 +98,6 @@ PITWALL_WIKIMEDIA_CONTACT="you@example.com" python scripts/fetch_images.py
 
 The script resumes where it stopped (`--force` re-fetches), and it stops cleanly, keeping its progress, if Wikimedia keeps refusing requests.
 
-Dataset licence: CC0 (see `backend/data/raw/README.md`). Image licences: see `credits.json`.
+A few driver portraits (Antonelli, Hamilton, Norris, Max Verstappen) were supplied by the project owner rather than collected from Commons. They are marked `"method": "supplied-by-owner"` in `credits.json`, labelled "Supplied by the project owner" in the UI, and never replaced by the collector, even with `--force`. Their licence is not recorded, so confirm you have the right to publish them before a public deployment.
+
+Dataset licence: CC0 (see `backend/data/raw/README.md`). Image licences: see `credits.json` (owner-supplied images excepted, see above).
